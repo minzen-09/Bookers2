@@ -1,0 +1,76 @@
+
+<div class="container px-5 px-sm-0">
+  <div class="row">
+    <div class="col-md-3">
+
+    <!-- ユーザーの詳細 -->
+
+      <div>
+        <h1>User info</h1>
+        <%= image_tag @user.get_profile_image(100,100) %>
+        <table class="table">
+          <tbody>
+          <tr></tr>
+            <tr>
+              <th>name</th>
+              <th><%= @user.name %></th>
+            </tr>
+            <tr>
+              <th>introduction</th>
+              <th><%= @user.introduction %></th>
+            </tr>
+          </tbody>
+        </table>
+
+        <% if @user == current_user %>
+          <p><%= link_to "プロフィール編集", edit_user_path(@user) %></p>
+        <% end %>
+      </div>
+
+    <!-- 画像投稿フォーム -->
+
+      <h1>New book</h1>
+      <%= form_with model: @booknew, url:books_path, method: :post do |f| %>
+        <h6>Title</h6>
+        <%= f.text_field :title %>
+        <h6>Opinion</h6>
+        <%= f.text_area :body %>
+        <%= f.submit 'Create Book' %>
+      <% end %>  
+
+    </div>
+
+    <!-- 投稿一覧 -->
+
+            <div class="col-md-8 offset-md-1">
+                  <h2>Books</h2>
+                  <table class="table table-hover table-inverse">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Title</th>
+                        <th>Opinion</th>
+                        <th colspan="3"></th>
+                      </tr>
+                    </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
+            </div>
+  </div>
+</div>
+    
+<!-- ユーザーの投稿一覧 -->
+
+<% @book.each do |book| %>
+  <div>
+    <%= link_to book_path(book.id) do %>
+      <%= image_tag book.get_image %> 
+    <% end %>
+    <p>投稿ユーザー画像：<%= image_tag book.user.get_profile_image(100,100) %></p>
+    <p>タイトル：<%= book.title %></p>
+    <p>感想：<%= book.body %></p>
+    <p>ユーザーネーム：<%= book.user.name %></p>
+  </div>
+<% end %>
+</div>
