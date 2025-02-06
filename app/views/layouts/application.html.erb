@@ -6,55 +6,72 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <script src="https://kit.fontawesome.com/44f6061d41.js" crossorigin="anonymous"></script>
+
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-     <div class="container">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
       <a class="navbar-brand" href="/">
-       <span>Bookers</span>
+        <span>Bookers</span>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" 
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ml-auto">
+      <div class="collapse navbar-collapse" id="navbarNavDropdown" style="display: flex; justify-content: flex-end;">
+        <ul style="display: flex; gap: 15px; margin: 0; padding: 0;">
           <% if user_signed_in? %>
-          <li>
-            <%= link_to 'Home', user_path(current_user.id), style: "color: white; text-decoration: none;" %>
-          </li>
-          <li>
-            <%= link_to 'Users', users_path, style: "color: white; text-decoration: none;" %>
-          </li>
-          <li>
-            <%= link_to 'Books', books_path, style: "color: white; text-decoration: none;" %>
-          </li>
-          <li>
-            <%= link_to "Log out", destroy_user_session_path, method: :delete, style: "color: white; text-decoration: none;" %>
-          </li>
-        <% else %>
-          <li>
-            <%= link_to 'Home', root_path, style: "color: white; text-decoration: none;" %>
-          </li>
-          <li>
-            <%= link_to 'About', about_path, style: "color: white; text-decoration: none;" %>
-          </li>
-          <li>
-            <%= link_to "Sign up", new_user_registration_path, style: "color: white; text-decoration: none;" %>
-          </li>
-          <li>
-            <%= link_to "Log in", new_user_session_path, style: "color: white; text-decoration: none;" %>
-          </li>
-      <% end %>      
+            <li>
+              <%= link_to user_path(current_user.id), style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
+                <i class="fa-solid fa-house" style="margin-right: 4px;"></i>
+                Home
+              <% end %>
+            </li>
+            <li>
+              <%= link_to 'Users', users_path, style: "color: white; text-decoration: none;" %>
+            </li>
+            <li>
+              <%= link_to 'Books', books_path, style: "color: white; text-decoration: none;" %>
+            </li>
+            <li>
+              <%= link_to "Log out", destroy_user_session_path, method: :delete, style: "color: white; text-decoration: none;" %>
+            </li>
+          <% else %>
+            <li style="display: flex; align-items: center;">
+              <%= link_to root_path, style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
+                <i class="fa-solid fa-house" style="margin-right: 4px;"></i>
+                Home
+              <% end %>
+            </li>
+            <li style="display: flex; align-items: center;">
+              <%= link_to about_path, style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
+                <i class="fa-solid fa-link" style="margin-right: 4px;"></i>
+                About
+              <% end %>
+            </li>
+            <li style="display: flex; align-items: center;">
+              <%= link_to new_user_registration_path, style: "color: white; text-decoration: none; display: flex; align-items: center;" do  %>
+                <i class="fa-solid fa-user-plus" style="margin-right: 4px;"></i>
+                Sign up
+              <% end %>
+            </li>
+            <li style="display: flex; align-items: center;">
+              <%= link_to new_user_session_path, style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
+                <i class="fa-solid fa-right-to-bracket" style="margin-right: 4px;"></i>
+                Log in
+              <% end %>
+            </li>
+          <% end %>      
         </ul>
       </div>
-     </div>
-    </nav>
-  </header>
+    </div>
+  </nav>
+</header>
 
   <main>
   <% if flash.present? %>
