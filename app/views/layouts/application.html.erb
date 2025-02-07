@@ -24,7 +24,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown" style="display: flex; justify-content: flex-end;">
-        <ul style="display: flex; gap: 15px; margin: 0; padding: 0;">
+        <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
           <% if user_signed_in? %>
             <li>
               <%= link_to user_path(current_user.id), style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
@@ -33,14 +33,23 @@
               <% end %>
             </li>
             <li>
-              <%= link_to 'Users', users_path, style: "color: white; text-decoration: none;" %>
+              <%= link_to users_path, style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
+                <i class="fa-solid fa-users" style="margin-right: 4px;"></i>
+                Users
+              <% end %>
             </li>
             <li>
-              <%= link_to 'Books', books_path, style: "color: white; text-decoration: none;" %>
+              <%= link_to books_path, style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
+                <i class="fa-solid fa-book-open" style="margin-right: 4px;"></i>
+                Books
+              <% end %>
             </li>
-            <li>
-              <%= link_to "Log out", destroy_user_session_path, method: :delete, style: "color: white; text-decoration: none;" %>
-            </li>
+            <li style="display: flex; align-items: center;">
+            <%= link_to destroy_user_session_path, method: :delete, style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
+              <i class="fa-solid fa-right-to-bracket" style="margin-right: 4px;"></i>
+              Log out
+            <% end %>
+          </li>
           <% else %>
             <li style="display: flex; align-items: center;">
               <%= link_to root_path, style: "color: white; text-decoration: none; display: flex; align-items: center;" do %>
