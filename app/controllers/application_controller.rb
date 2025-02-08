@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
     user_path(current_user.id)
   end
 
+  def after_sign_up_path_for(resource)
+    user_path(resource)  # 新規登録したユーザーの詳細ページへリダイレクト
+  end
+
   def after_sign_out_path_for(resource)
     root_path
   end

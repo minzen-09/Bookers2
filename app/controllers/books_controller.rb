@@ -4,15 +4,18 @@ class BooksController < ApplicationController
   end
 
   def create
-    @book = Book.new(book_params)
-    @book.user_id = current_user.id
-    if @book.save
+    @user = current_user
+    @book = Book.all
+    @booknew = Book.new(book_params)
+    @booknew.user_id = current_user.id
+    if @booknew.save
       flash[:notice] = "You have created book successfully."
-      redirect_to books_path(@book.id)
+      redirect_to book_path(@booknew)
     else
-      flash[:alert] = "You have failed to create the book.Please check your input."
+      # flash[:alert] = "You have failed to create the book.Please check your input."
+      render :index
     end
-    
+
   end
   
   def index
@@ -30,13 +33,19 @@ class BooksController < ApplicationController
 
   def edit
     @book = Book.find(params[:id])
+  
+    # ユーザーが自分の本だけを編集できるようにする
+    unless @book.user_id == current_user.id
+      redirect_to books_path, alert: "You are not authorized to edit this book."
+    end
   end
+  
 
   def update
     @book = Book.find(params[:id])
     if @book.update(book_params)
       flash[:notice] = "Book was successfully updated."
-      redirect_to book_path(@book.id)
+      redirect_to book_path(@book)
     else
       flash.now[:alert] = "error Book was not created successfully"
       render :edit

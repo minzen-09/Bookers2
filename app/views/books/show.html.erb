@@ -66,27 +66,55 @@
               <td colspan="3">
                 <table style="width: 100%; text-align: center;">
                   <tr>
+                    <!-- ユーザー情報（プロフィール画像と名前） -->
                     <td style="text-align: center; padding: 10px;">
                       <%= image_tag @book.user.get_profile_image(80, 80) %><br>
                       <%= link_to @book.user.name, user_path(@book.user), class: "user-link" %>
                     </td>                  
+                    
+                    <!-- 本のタイトル -->
                     <td style="padding: 10px;">
                       <%= link_to @book.title, book_path(@book) %>
                     </td>
-                    <td style="padding: 10px;"><%= @book.user.name %></td>
+                    
+                    <!-- 本の紹介文 -->
+                    <td style="padding: 10px;">
+                      <%= @book.body %>
+                    </td>
+                    
+                    <!-- 編集・削除リンク（自分の投稿のみ表示） -->
                     <% if @book.user == current_user %>
-                <td style="padding: 10px;" colspan="2">
-                  <div style="display: flex; align-items: center; gap: 10px;">
-                    <%= link_to "Edit", edit_book_path(@book), class: "btn btn-success" %>
-                    <%= link_to "Destroy", book_path(@book), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger" %>
-                  </div>
-                </td>
+                      <td style="padding: 10px;" colspan="2">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                          <%= link_to "Edit", edit_book_path(@book), class: "btn btn-success" %>
+                          <%= link_to "Destroy", book_path(@book), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger" %>
+                        </div>
+                      </td>
                     <% end %>
                   </tr>
-                </table>
+                  </table>
               </td>
-              </tr>                     
-            <% end %>
+              </tr>
+            <% elsif request.path == user_path(user) %> <!-- 参照しているユーザーの詳細ページ -->
+              <tr>
+                <td colspan="3">
+                  <table>
+                    <tr>
+                      <td><strong>ユーザー画像：</strong></td>
+                      <td><%= image_tag user.get_profile_image(80, 80) %></td>
+                    </tr>
+                    <tr>
+                      <td><strong>ユーザーネーム：</strong></td>
+                      <td><%= user.name %></td>
+                    </tr>
+                    <tr>
+                      <td><strong>自己紹介：</strong></td>
+                      <td><%= user.introduction %></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            <% end %>                       
           </tbody>
         </table>
       </div>

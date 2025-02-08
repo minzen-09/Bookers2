@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @book = @user.books
+    @books = @user.books
     @booknew = Book.new
    end
   
@@ -19,8 +20,13 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    @user.update(user_params)
-    redirect_to user_path(@user)
+  
+    if @user.update(user_params)
+      redirect_to user_path(@user), notice: 'You have updated user successfully.'
+    else
+      # flash.now[:alert] = 'You have failed to update the user.Please check your input.'
+      render :edit
+    end
   end
 
 
