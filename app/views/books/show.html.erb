@@ -1,11 +1,119 @@
-<div>
-  <p>タイトル：<%= @book.title %></p>
-  <p>説明：<%= @book.body %></p>
-  <p>投稿ユーザー画像：<%= image_tag @book.user.get_profile_image(80,80) %></p>
-  <p>ユーザーネーム：<%= @book.user.name %></p>
-  <p>投稿日：<%= @book.created_at.strftime('%Y/%m/%d') %></p>
-  <% if @book.user == current_user %>
-    <%= link_to "編集", edit_book_path(@book), class: "btn btn-success" %>
-    <%= link_to "削除", book_path(@book), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger" %>
-  <% end %>
+<div class="container px-5 px-sm-0 py-3">
+  <div class="row">
+    <div class="col-md-3">
+
+    <!-- ユーザープロフィール -->
+    <!-- 投稿機能 -->
+    <!-- _sidbar.html.erbへ 共通部分テンプレート -->
+    <%= render 'users/sidbar', booknew: @booknew , user: @user %>
+
+    <!-- ユーザーの投稿一覧 -->
+      <div class="col-md-8 offset-md-1">
+        <!-- タイトルを変更 -->
+          <% if request.path.include?("/books/") && request.path != books_path %>
+            <h2>Book detail</h2>
+          <% elsif request.path == users_path %>
+            <h2>Users</h2>
+          <% elsif request.path == books_path || request.path.match?(/^\/users\/\d+$/) %>
+            <h2>Books</h2>
+          <% end %>
+
+        <table class="table table-hover table-inverse">
+          <thead>
+            <tr>
+              <% if request.path == "/users" %>
+                <th>image</th>
+                <th>name</th>
+              <% elsif request.path == books_path %>
+                <th></th>
+                <th>Title</th>
+                <th>Opinion</th>
+              <% elsif request.path.match?(/^\/users\/\d+$/) %>
+                <th></th>
+                <th>Title</th>
+                <th>Opinion</th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% if request.path == "/users" %>
+              <% @users.each do |user| %>
+                <tr>
+                  <td>
+                    <%= image_tag user.get_profile_image(80, 80) %>
+                  </td>
+                  <td><%= user.name %></td>
+                  <td>
+                    <%= link_to "Show", user_path(user) %>
+                  </td>
+                </tr>
+              <% end %>
+            <% elsif request.path == books_path %>
+              <% @books.each do |book| %>
+                <tr>
+                  <td>
+                    <%= link_to book_path(book.id) do %>
+                      <%= image_tag book.get_image, width: 80, height: 80 %>
+                    <% end %>
+                  </td>
+                  <td><%= link_to book.title, book_path(book.id) %></td>
+                  <td><%= book.body %></td>
+                </tr>
+              <% end %>
+            <% elsif request.path.include?("/books/") %>
+              <!-- 個別の本の詳細表示 -->
+              <tr>
+              <td colspan="3">
+                <table style="width: 100%; text-align: center;">
+                  <tr>
+                    <td style="text-align: center; padding: 10px;">
+                      <%= image_tag @book.user.get_profile_image(80, 80) %><br>
+                      <%= link_to @book.user.name, user_path(@book.user), class: "user-link" %>
+                    </td>                  
+                    <td style="padding: 10px;">
+                      <%= link_to @book.title, book_path(@book) %>
+                    </td>
+                    <td style="padding: 10px;"><%= @book.user.name %></td>
+                    <% if @book.user == current_user %>
+                <td style="padding: 10px;" colspan="2">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <%= link_to "Edit", edit_book_path(@book), class: "btn btn-success" %>
+                    <%= link_to "Destroy", book_path(@book), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger" %>
+                  </div>
+                </td>
+                    <% end %>
+                  </tr>
+                </table>
+              </td>
+              </tr>                     
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
 </div>
+
+<style>
+  .custom-btn {
+    background-color: white;
+    color: gray;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .custom-icon {
+    color: gray;
+    transition: color 0.3s ease;
+  }
+  .custom-btn:hover {
+    background-color: gray;
+    color: white;
+  }
+  .custom-btn:hover .custom-icon {
+    color: white;
+  }
+</style>

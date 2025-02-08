@@ -8,7 +8,7 @@ class BooksController < ApplicationController
     @book.user_id = current_user.id
     if @book.save
       flash[:notice] = "You have created book successfully."
-      redirect_to user_path(@book.user.id)
+      redirect_to books_path(@book.id)
     else
       flash[:alert] = "You have failed to create the book.Please check your input."
     end
@@ -23,6 +23,9 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @books = Book.all
+    @booknew = Book.new
+    @user = current_user
   end
 
   def edit
